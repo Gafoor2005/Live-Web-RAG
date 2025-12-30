@@ -1,0 +1,31 @@
+To implement a RAG system that tracks dynamic DOM changes via Selenium in 2025, you should follow a modular, event-driven architecture. This structure separates the high-frequency "listening" (Selenium) from the lower-frequency "reasoning" (LLM/RAG).
+
+High-Level Python Structure
+1. DOMWatcher (The Ingestion Class)
+This class manages the Selenium driver and detects changes. It is responsible for making the data "convenient" by converting raw HTML into clean units.
+Methods:
+__init__(): Initializes the Selenium driver and starts the MutationObserver via JavaScript injection.
+get_page_hash(): Generates a unique fingerprint of the current DOM to detect if an update is worth re-embedding.
+capture_semantic_markdown(): Triggers on button clicks or redirects to extract content and convert it to structured Markdown.
+2. KnowledgeBase (The Vector Store Class)
+This class interfaces with your vector database (e.g., Pinecone, ChromaDB, or Qdrant) to handle "upserts".
+Methods:
+sync_chunk(text, metadata): The Upsert logic. It embeds the new text and either adds a new record or updates an existing one if the source ID matches.
+prune_stale_vectors(): Removes outdated data from previous "clicks" or "redirects" that are no longer valid.
+3. RAGOrchestrator (The Query & Generation Class)
+This is the core "bridge" that handles the user's query and fetches relevant context.
+Methods:
+retrieve(query): Converts the user's question into a vector and searches the database for the \(k\) most relevant chunks.
+generate_response(query, context): Sends the query and the retrieved web context to the LLM.
+Key 2025 Best Practices
+Metadata Tagging: Always tag chunks with state_id or timestamp. This allows the RAG model to answer, "What changed in the last 5 minutes?".
+Hybrid Search: In 2025, combined vector (semantic) and keyword search is standard for web data to ensure exact terms like button names or price numbers are correctly retrieved.
+Contextual Caching: Cache results for common "click-states" to reduce latency in high-traffic dynamic environments. 
+
+
+
+----------------------
+
+The strategy for a production RAG system in 2025 is to use a two-stage retrieval process:
+Embedding/Retrieval: The chosen embedding model (llama-3.2-nv-embedqa-1b-v2 ) quickly searches the entire vector database (populated from your DOM data) to find a broad set of potentially relevant chunks (e.g., top 50 results).
+Reranking/Ranking: The reranker model (llama-3.2-nv-rerankqa-1b-v2) then performs a deeper, more accurate comparison on those 50 results to select the top 3-5 most pertinent chunks to send to your Language Model for generating the final answer.

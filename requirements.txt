@@ -1,0 +1,30 @@
+# Live Web RAG - Dependencies
+
+# Core
+selenium>=4.15.0
+webdriver-manager>=4.0.0
+
+# HTML Processing (requires Node.js and jsdom)
+# Run: npm install jsdom
+# in the project root to install the JS dependency
+lxml>=5.0.0
+
+# Vector Database
+chromadb>=0.4.22
+
+# Local Embeddings (GPU accelerated)
+sentence-transformers>=2.2.0
+torch>=2.0.0
+
+# OpenAI (optional - for cloud LLM)
+openai>=1.12.0
+
+# Ollama (for local LLM)
+ollama>=0.1.0
+
+# Utilities
+python-dotenv>=1.0.0
+
+# Optional: For production vector DBs
+# pinecone-client>=3.0.0
+# qdrant-client>=1.7.0

@@ -1,0 +1,9 @@
+{
+  "name": "live-web-rag",
+  "version": "1.0.0",
+  "description": "HTML to RAG-Optimized Markdown converter dependency",
+  "private": true,
+  "dependencies": {
+    "jsdom": "^25.0.1"
+  }
+}
